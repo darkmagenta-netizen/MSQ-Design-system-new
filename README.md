@@ -8,8 +8,8 @@ Node.js 18+
 Part 1: Get the design system from GitHub
 Option A: Clone the repo (reference / copy from it)
 # Clone the design system repo (replace with your org/repo)
-git clone https://github.com/YOUR_ORG/msq-design-system.git
-cd msq-design-system
+git clone https://github.com/YOUR_ORG/msq-design-system-new.git
+cd msq-design-system-new
 npm install
 npm run dev
 # Docs at http://localhost:3001/docs
@@ -18,9 +18,9 @@ Use this copy as a reference: browse components and copy only what you need into
 Option B: Add as a Git submodule (keep in sync from one repo)
 From your existing app root:
 
-git submodule add https://github.com/YOUR_ORG/msq-design-system.git packages/design-system
+git submodule add https://github.com/YOUR_ORG/msq-design-system-new.git packages/design-system
 # Or: design-system at repo root
-git submodule add https://github.com/YOUR_ORG/msq-design-system.git design-system
+git submodule add https://github.com/YOUR_ORG/msq-design-system-new.git design-system
 Then copy files from design-system/ (or packages/design-system/) into your app as in Part 2. Update the submodule when the design system changes:
 
 git submodule update --remote design-system
