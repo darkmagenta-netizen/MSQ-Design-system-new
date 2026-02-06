@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+  
+  :root {
+    /* shadcn/ui color system - Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+    
+    /* MSQ Radius Tokens (from tokens/mapped/borderRadius.ts) */
+    --radius-none: 0px;
+    --radius-xs: 4px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    /* MSQ Design Tokens - Light Theme (from Figma) */
+    --color-primary: #2960ec;
+    --color-primary-hover: #174fdf;
+    --color-primary-active: #0a41cc;
+    --color-primary-disabled: #bbbfcc;
+    
+    --color-secondary: #648ef9;
+    --color-secondary-hover: #4375f4;
+    --color-secondary-active: #2960ec;
+    
+    --color-background: #ffffff;
+    --color-background-subtle: #f6f7f9;
+    --color-background-elevated: #f9fafb;
+    --color-background-hover: #f6f7f9;
+    --color-background-overlay: #141519;
+    
+    --color-text: #141519;
+    --color-text-primary: #141519; /* Alias for --color-text */
+    --color-text-secondary: #3e414c;
+    --color-text-tertiary: #838799;
+    --color-text-tertiary-hover: #545766;
+    --color-text-inverse: #f6f7f9;
+    --color-text-on-primary: #f6f7f9;
+    
+    --color-border: #bbbfcc;
+    --color-border-subtle: #dbdee3;
+    --color-border-tertiary: #ededed;
+    --color-border-strong: #9ea2b3;
+    --color-border-disabled: #bbbfcc;
+    --color-border-disabled-subtle: #dbdee3;
+    
+    --color-success: #3dcc87;
+    --color-warning: #db8400;
+    --color-error: #cc0000;
+    --color-info: #2960ec;
+    
+    --color-foreground-secondary-hover: #292b33;
+    --color-foreground-tertiary: #6b6f80;
+    --color-foreground-white: #ffffff;
+
+    /* Tooltip (exact values from Figma) */
+    --tooltip-bg: #141519;
+    --tooltip-text: #f6f7f9; /* Colors/Text/text_on_primary-blue */
+    --tooltip-supporting-text: #838799; /* Colors/Text/text-tertiary */
+
+    /* Progress */
+    --progress-track: #e8eeff; /* Colors/Background/bg-primary-blue */
+    --progress-fill: var(--color-primary); /* Colors/Foreground/fg-primary-blue */
+
+    /* Alert – light theme (accessible contrast) */
+    --color-alert-info-bg: var(--color-background-hover);
+    --color-alert-error-bg: #ffe6e6;
+    --color-alert-error-bg-subtle: rgba(255, 230, 230, 0.6);
+    --color-alert-error-border: #cc0000;
+    --color-alert-error-text: #b30000;
+    --color-alert-success-bg: #e6fff4;
+    --color-alert-success-bg-subtle: rgba(230, 255, 244, 0.6);
+    --color-alert-success-border: #069952;
+    --color-alert-success-text: #057a42;
+    --color-alert-warning-bg: #fdebc3;
+    --color-alert-warning-bg-subtle: rgba(253, 235, 195, 0.6);
+    --color-alert-warning-border: #db8400;
+    --color-alert-warning-text: #b36b00;
+
+    /* Logo/icon display surface – light theme (no change from current) */
+    --color-logo-surface: var(--color-background-subtle);
+    --color-icon-on-logo-surface: var(--color-text);
+  }
+  
+  .dark {
+    /* shadcn/ui color system - Dark Theme */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    
+    /* MSQ Radius Tokens (same for dark theme) */
+    --radius-none: 0px;
+    --radius-xs: 4px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    /* MSQ Design Tokens - Dark Theme (from Figma) */
+    --color-primary: #4375f4;
+    --color-primary-hover: #2960ec;
+    --color-primary-active: #174fdf;
+    --color-primary-disabled: #292b33;
+    
+    --color-secondary: #8faefc;
+    --color-secondary-hover: #648ef9;
+    --color-secondary-active: #4375f4;
+    
+    --color-background: #141519;
+    --color-background-subtle: #1a1d23;
+    --color-background-elevated: #1f2229;
+    --color-background-hover: #1f2229;
+    --color-background-overlay: #0a0c0f;
+    
+    --color-text: #f6f7f9;
+    --color-text-primary: #f6f7f9; /* Alias for --color-text */
+    --color-text-secondary: #dbdee3;
+    --color-text-tertiary: #9ea2b3;
+    --color-text-tertiary-hover: #bbbfcc;
+    --color-text-inverse: #141519;
+    --color-text-on-primary: #141519;
+    
+    --color-border: #3e414c;
+    --color-border-subtle: #292b33;
+    --color-border-tertiary: #1f2229;
+    --color-border-strong: #545766;
+    --color-border-disabled: #292b33;
+    --color-border-disabled-subtle: #1f2229;
+    
+    --color-success: #3dcc87;
+    --color-warning: #db8400;
+    --color-error: #f47171;
+    --color-error-hover: #e62e2e;
+    --color-error-active: #cc0000;
+    --color-info: #4375f4;
+    
+    /* Ensure primary buttons use primary color in dark mode */
+    --button-primary-bg: var(--color-primary);
+    --button-primary-hover: var(--color-primary-hover);
+    --button-primary-active: var(--color-primary-active);
+    
+    --color-foreground-secondary-hover: #ededed;
+    --color-foreground-tertiary: #838799;
+    --color-foreground-white: #ffffff;
+
+    /* Tooltip (keep consistent with Figma) */
+    --tooltip-bg: #141519;
+    --tooltip-text: #f6f7f9; /* Colors/Text/text_on_primary-blue */
+    --tooltip-supporting-text: #838799; /* Colors/Text/text-tertiary */
+
+    /* Progress (approximate for dark theme) */
+    --progress-track: color-mix(in_srgb, var(--color-primary) 18%, var(--color-background));
+    --progress-fill: var(--color-primary);
+
+    /* Alert – dark theme (accessible contrast, WCAG AA) */
+    --color-alert-info-bg: var(--color-background-hover);
+    --color-alert-error-bg: #2a1515;
+    --color-alert-error-bg-subtle: rgba(204, 0, 0, 0.14);
+    --color-alert-error-border: #e62e2e;
+    --color-alert-error-text: #f47171;
+    --color-alert-success-bg: #0d2818;
+    --color-alert-success-bg-subtle: rgba(61, 204, 135, 0.12);
+    --color-alert-success-border: #3dcc87;
+    --color-alert-success-text: #5dd99e;
+    --color-alert-warning-bg: #2a2200;
+    --color-alert-warning-bg-subtle: rgba(219, 132, 0, 0.14);
+    --color-alert-warning-border: #e5a000;
+    --color-alert-warning-text: #f0b429;
+
+    /* Logo/icon display surface – dark theme (light surface so logos/icons stay on-brand and visible) */
+    --color-logo-surface: #f6f7f9;
+    --color-icon-on-logo-surface: #141519;
+  }
+}
+
+/* Hide scrollbar but keep normal scrolling (side nav, etc.) */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+

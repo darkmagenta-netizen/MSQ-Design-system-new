@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <circle cx="20" cy="20" r="20" fill="rgba(0,0,0,0.08)"/>
+  <text x="20" y="26" textAnchor="middle" fill="#333" fontFamily="system-ui,sans-serif" fontSize="14" fontWeight="bold">K</text>
+</svg>

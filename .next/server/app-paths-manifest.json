@@ -1,0 +1,9 @@
+{
+  "/docs/page": "app/docs/page.js",
+  "/docs/components/calendar/page": "app/docs/components/calendar/page.js",
+  "/docs/components/checkbox/page": "app/docs/components/checkbox/page.js",
+  "/docs/components/pagination/page": "app/docs/components/pagination/page.js",
+  "/docs/components/banner/page": "app/docs/components/banner/page.js",
+  "/docs/components/progress/page": "app/docs/components/progress/page.js",
+  "/docs/components/tooltip/page": "app/docs/components/tooltip/page.js"
+}
