@@ -44,7 +44,7 @@ const SearchSmFallback = React.forwardRef<SVGSVGElement, IconProps>((props, ref)
 SearchSmFallback.displayName = "SearchSmFallback"
 
 export interface CalendarSearchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange">,
     VariantProps<typeof calendarSearchVariants> {
   /**
    * Status variant: "calendar" for date picker, "search" for search input
@@ -59,7 +59,7 @@ export interface CalendarSearchProps
    */
   value?: string
   /**
-   * Callback when value changes
+   * Callback when value changes (receives the string value directly)
    */
   onChange?: (value: string) => void
 }
