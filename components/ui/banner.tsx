@@ -36,7 +36,7 @@ const XIconFallback = React.forwardRef<SVGSVGElement, IconProps>((props, ref) =>
 XIconFallback.displayName = "XIconFallback"
 
 export interface BannerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
     VariantProps<typeof bannerVariants> {
   /**
    * Banner title/headline
