@@ -185,8 +185,8 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
         )
       }
       
-      // Otherwise, use icon component from registry or fallback
-      const IconComponent = icon || (iconComponents["chevron-down"]?.component || ChevronDownFallback)
+      // Otherwise, use icon component from registry or fallback (icon that wasn't a valid element is ignored here)
+      const IconComponent = iconComponents["chevron-down"]?.component ?? ChevronDownFallback
 
       return (
         <div

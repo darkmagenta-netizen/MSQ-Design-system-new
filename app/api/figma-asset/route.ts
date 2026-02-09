@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 const FILE_KEY = 'kPnax7i9sQ1P4jFUSgAQnV'
 /** Crypto logos frame from MSQ Design System – Working (node-id=14331-1601) */
 const FIGMA_CRYPTO_CONTAINER_NODE_ID = '14331-1601'
+/** Banner frame (node-id=14447-3283) – used to resolve background layers */
+const FIGMA_BANNER_FRAME_NODE_ID = '14447-3283'
 
 type CryptoType = 'BTC' | 'MATIC' | 'SHIB' | 'USDT' | 'KRW' | 'USDC' | 'MSQ'
 
@@ -65,10 +67,10 @@ async function getCryptoNodeIds(containerNodeId: string): Promise<Record<CryptoT
 }
 
 /** Export image from Figma using official API (requires FIGMA_ACCESS_TOKEN for private files) */
-async function fetchFigmaImage(nodeId: string, format: 'svg' | 'png'): Promise<ArrayBuffer | null> {
+async function fetchFigmaImage(nodeId: string, format: 'svg' | 'png', scale = 2): Promise<ArrayBuffer | null> {
   const token = process.env.FIGMA_ACCESS_TOKEN
   const idForApi = toFigmaId(nodeId)
-  const url = `https://api.figma.com/v1/images/${FILE_KEY}?ids=${encodeURIComponent(idForApi)}&format=${format}`
+  const url = `https://api.figma.com/v1/images/${FILE_KEY}?ids=${encodeURIComponent(idForApi)}&format=${format}&scale=${scale}`
   const res = await fetch(url, {
     headers: token ? { 'X-Figma-Token': token } : {},
   })
@@ -83,6 +85,37 @@ async function fetchFigmaImage(nodeId: string, format: 'svg' | 'png'): Promise<A
   return imgRes.arrayBuffer()
 }
 
+/** Fetch direct children of a node (id, name, type) */
+async function getNodeChildren(containerNodeId: string): Promise<Array<{ id: string; name: string; type: string }>> {
+  const token = process.env.FIGMA_ACCESS_TOKEN
+  if (!token) return []
+
+  const idForApi = toFigmaId(containerNodeId)
+  const url = `https://api.figma.com/v1/files/${FILE_KEY}/nodes?ids=${encodeURIComponent(idForApi)}&depth=2`
+  const res = await fetch(url, {
+    headers: { 'X-Figma-Token': token },
+  })
+  if (!res.ok) return []
+
+  const data = await res.json() as {
+    nodes?: Record<string, { document?: { children?: Array<{ id: string; name: string; type: string }> } }>
+  }
+  const nodeData = data.nodes?.[idForApi]
+  const children = nodeData?.document?.children ?? []
+  return children.map((c) => ({ id: c.id.replace(/:/g, '-'), name: c.name, type: c.type }))
+}
+
+/** Resolve banner background: first child that looks like a background (FRAME/RECTANGLE), or parent */
+async function resolveBannerBackgroundNode(frameNodeId: string): Promise<string> {
+  const children = await getNodeChildren(frameNodeId)
+  const backgroundLike = children.find(
+    (c) =>
+      c.type === 'FRAME' || c.type === 'RECTANGLE' || c.type === 'GROUP' ||
+      /background|bg|fill/i.test(c.name)
+  )
+  return backgroundLike?.id ?? frameNodeId
+}
+
 /**
  * API route to fetch asset images from Figma.
  * - nodeId: export that node (uses Figma REST API when FIGMA_ACCESS_TOKEN is set).
@@ -95,6 +128,7 @@ export async function GET(request: NextRequest) {
   let nodeId = searchParams.get('nodeId')
   const crypto = searchParams.get('crypto') as CryptoType | null
   const containerNodeId = searchParams.get('containerNodeId') ?? FIGMA_CRYPTO_CONTAINER_NODE_ID
+  const bannerBackground = searchParams.get('bannerBackground') === '1' || searchParams.get('bannerBackground') === 'true'
 
   if (crypto && ['BTC', 'MATIC', 'SHIB', 'USDT', 'KRW', 'USDC', 'MSQ'].includes(crypto)) {
     const nodeMap = await getCryptoNodeIds(containerNodeId)
@@ -102,12 +136,17 @@ export async function GET(request: NextRequest) {
     if (resolvedId) nodeId = resolvedId
   }
 
+  if (bannerBackground && nodeId) {
+    const resolved = await resolveBannerBackgroundNode(nodeId)
+    if (resolved !== nodeId) nodeId = resolved
+  }
+
   if (!assetId && !nodeId) {
     return NextResponse.json({ error: 'assetId, nodeId, or crypto is required' }, { status: 400 })
   }
 
   if (nodeId) {
-    for (const format of ['svg', 'png'] as const) {
+    for (const format of ['png', 'svg'] as const) {
       const buf = await fetchFigmaImage(nodeId, format)
       if (buf) {
         const contentType = format === 'svg' ? 'image/svg+xml' : 'image/png'

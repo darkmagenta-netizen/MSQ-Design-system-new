@@ -116,14 +116,14 @@ export function Search({ open, onOpenChange }: SearchProps) {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay - above header (z-[9999]) so search is on top */}
       <div
-        className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[10000] bg-black/50 backdrop-blur-sm"
         onClick={() => onOpenChange(false)}
       />
       
       {/* Search Modal */}
-      <div className="fixed left-1/2 top-[15%] z-50 w-full max-w-2xl -translate-x-1/2 transform">
+      <div className="fixed left-1/2 top-[15%] z-[10001] w-full max-w-2xl -translate-x-1/2 transform px-4">
         <div className="overflow-hidden rounded-lg border bg-popover shadow-lg">
           {/* Search Input */}
           <div className="flex items-center border-b px-4">

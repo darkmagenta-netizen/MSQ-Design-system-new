@@ -21,10 +21,14 @@ export function Header({ onMenuToggle }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex h-14 items-center min-w-0 w-full">
+      <header
+        className="fixed top-0 left-0 right-0 z-[9999] w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 isolate"
+        style={{ pointerEvents: "auto" }}
+      >
+        <div className="flex h-14 items-center min-w-0 w-full pointer-events-auto">
           <div className="flex shrink-0 min-w-0 max-w-[calc(100%-8rem)] lg:max-w-none lg:w-[250px] xl:w-[300px] items-center gap-1 sm:gap-2 px-3 sm:px-4 lg:border-r">
             <button
+              type="button"
               onClick={onMenuToggle}
               className="lg:hidden shrink-0 inline-flex items-center justify-center rounded-md p-2 hover:bg-accent transition-colors"
               aria-label={t.toggleMenu}
@@ -35,7 +39,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
               <MSQLogo variant="horizontal" size={120} className="w-[90px] sm:w-[100px] lg:w-[120px] h-auto max-w-full" />
             </Link>
           </div>
-          <div className="flex flex-1 min-w-0 items-center justify-end gap-2 sm:gap-3 px-3 sm:px-4 lg:px-8">
+          <div className="flex flex-1 min-w-0 items-center justify-end gap-2 sm:gap-3 px-3 sm:px-4 lg:px-8 overflow-visible">
             <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm shrink-0">
               <Link
                 href="/docs"
@@ -50,10 +54,11 @@ export function Header({ onMenuToggle }: HeaderProps) {
                 {t.components}
               </Link>
             </nav>
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-nowrap">
               <ThemeToggle />
               <LanguageSelector />
               <button
+                type="button"
                 onClick={() => setSearchOpen(true)}
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 shrink-0"
                 aria-label={t.search}

@@ -1,4 +1,4 @@
-// File: /Users/matildaanashie/Documents/MSQ Design system new/app/docs/layout.tsx
+// File: /Users/matildaanashie/Documents/MSQ-Design-system-new/app/docs/layout.tsx
 import * as entry from '../../../../app/docs/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -10,7 +10,7 @@ export function LanguageSelector() {
   const { language, setLanguage } = useLanguage()
   const [isOpen, setIsOpen] = React.useState(false)
   const triggerRef = React.useRef<HTMLButtonElement>(null)
-  const [dropdownStyle, setDropdownStyle] = React.useState({ top: 0, right: 0 })
+  const [dropdownStyle, setDropdownStyle] = React.useState({ top: 0, left: 0 })
 
   const languages: { code: Language; label: string; flag: string }[] = [
     { code: "eng", label: "ENG", flag: "🇬🇧" },
@@ -22,11 +22,10 @@ export function LanguageSelector() {
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement
-      if (!target.closest('[data-language-selector]')) {
+      if (!target.closest("[data-language-selector]") && !target.closest("[data-language-dropdown]")) {
         setIsOpen(false)
       }
     }
-
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside)
       return () => document.removeEventListener("mousedown", handleClickOutside)
@@ -34,51 +33,89 @@ export function LanguageSelector() {
   }, [isOpen])
 
   React.useEffect(() => {
-    if (!isOpen || !triggerRef.current || typeof document === "undefined") return
+    if (!isOpen || !triggerRef.current) return
     const rect = triggerRef.current.getBoundingClientRect()
     setDropdownStyle({
-      top: rect.bottom + 8,
-      right: window.innerWidth - rect.right,
+      top: rect.bottom + 4,
+      left: rect.left,
     })
   }, [isOpen])
 
-  const dropdownContent = isOpen && (
+  const portalTarget =
+    typeof document !== "undefined"
+      ? document.getElementById("portal-root") ?? document.body
+      : null
+
+  const portalContent = isOpen && portalTarget && (
     <>
+      {/* Full-screen overlay: in portal root so it's on top; pointerEvents auto so clicks work */}
       <div
-        className="fixed inset-0 z-[100]"
+        aria-hidden
+        role="presentation"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 1,
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          pointerEvents: "auto",
+        }}
         onClick={() => setIsOpen(false)}
-        aria-hidden="true"
       />
+      {/* Dropdown: in portal root so it's on top; pointerEvents auto so ENG/KOR are clickable */}
       <div
-        className="fixed z-[101] min-w-[120px] rounded-md border bg-popover shadow-md"
-        style={{ top: dropdownStyle.top, right: dropdownStyle.right }}
-        role="menu"
+        data-language-dropdown
+        role="listbox"
+        style={{
+          position: "fixed",
+          top: dropdownStyle.top,
+          left: dropdownStyle.left,
+          zIndex: 2,
+          minWidth: 120,
+          borderRadius: 6,
+          border: "1px solid #d1d5db",
+          backgroundColor: "#ffffff",
+          boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
+          padding: 4,
+          pointerEvents: "auto",
+        }}
       >
-        <div className="p-1">
-          {languages.map((lang) => (
-            <button
-              key={lang.code}
-              type="button"
-              onClick={() => {
-                setLanguage(lang.code)
-                setIsOpen(false)
-              }}
-              role="menuitem"
-              className={cn(
-                "w-full flex items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm",
-                "hover:bg-accent hover:text-accent-foreground",
-                "transition-colors",
-                language === lang.code && "bg-accent text-accent-foreground"
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-base">{lang.flag}</span>
-                <span>{lang.label}</span>
-              </div>
-              {language === lang.code && <Check className="h-4 w-4" />}
-            </button>
-          ))}
-        </div>
+        {languages.map((lang) => (
+          <button
+            key={lang.code}
+            type="button"
+            role="option"
+            onClick={() => {
+              setLanguage(lang.code)
+              setIsOpen(false)
+            }}
+            style={{
+              display: "flex",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+              padding: "6px 8px",
+              borderRadius: 4,
+              border: "none",
+              background: language === lang.code ? "#f3f4f6" : "transparent",
+              color: "#111827",
+              fontSize: 14,
+              cursor: "pointer",
+              textAlign: "left",
+              fontWeight: language === lang.code ? 600 : 400,
+            }}
+            onMouseEnter={(e) => {
+              if (language !== lang.code) e.currentTarget.style.backgroundColor = "#f3f4f6"
+            }}
+            onMouseLeave={(e) => {
+              if (language !== lang.code) e.currentTarget.style.backgroundColor = "transparent"
+            }}
+          >
+            <span style={{ fontSize: 16 }}>{lang.flag}</span>
+            <span>{lang.label}</span>
+            {language === lang.code && <Check size={16} style={{ flexShrink: 0 }} />}
+          </button>
+        ))}
       </div>
     </>
   )
@@ -87,29 +124,25 @@ export function LanguageSelector() {
     <div className="relative" data-language-selector>
       <button
         ref={triggerRef}
-        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
           "inline-flex items-center justify-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium",
           "hover:bg-accent hover:text-accent-foreground",
-          "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "h-9 min-w-[80px]"
         )}
         aria-label="Select language"
         aria-expanded={isOpen}
-        aria-haspopup="menu"
+        aria-haspopup="listbox"
       >
         <span className="text-base">{currentLanguage.flag}</span>
         <span>{currentLanguage.label}</span>
-        <ChevronDown
-          className={cn(
-            "h-4 w-4 transition-transform",
-            isOpen && "rotate-180"
-          )}
-        />
+        <ChevronDown className={cn("h-4 w-4", isOpen && "rotate-180")} />
       </button>
 
-      {typeof document !== "undefined" &&
-        createPortal(dropdownContent, document.body)}
+      {/* Portal into #portal-root (last in body) so overlay + dropdown are on top of page */}
+      {portalContent && createPortal(portalContent, portalTarget)}
     </div>
   )
 }

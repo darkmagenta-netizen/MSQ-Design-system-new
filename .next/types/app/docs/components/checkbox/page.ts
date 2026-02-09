@@ -1,4 +1,4 @@
-// File: /Users/matildaanashie/Documents/MSQ Design system new/app/docs/components/checkbox/page.tsx
+// File: /Users/matildaanashie/Documents/MSQ-Design-system-new/app/docs/components/checkbox/page.tsx
 import * as entry from '../../../../../../app/docs/components/checkbox/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

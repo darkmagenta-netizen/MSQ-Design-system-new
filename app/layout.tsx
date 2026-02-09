@@ -1,10 +1,7 @@
 import type { Metadata } from "next"
-import "./globals.css"
+import "@/app/globals.css"
 import { ThemeProvider } from "@/lib/theme-provider"
 import { LanguageProvider } from "@/lib/language-provider"
-
-// Use system font stack instead of Google Fonts to avoid network issues
-const fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
 
 export const metadata: Metadata = {
   title: "MSQ Design System",
@@ -18,12 +15,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body style={{ fontFamily }}>
+      <body>
         <ThemeProvider defaultTheme="light" storageKey="msq-theme">
           <LanguageProvider defaultLanguage="eng" storageKey="msq-language">
             {children}
           </LanguageProvider>
         </ThemeProvider>
+        {/* Portal root: last in DOM so dropdowns/modals render on top of everything */}
+        <div
+          id="portal-root"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 2147483647,
+            pointerEvents: "none",
+          }}
+        />
       </body>
     </html>
   )

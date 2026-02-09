@@ -6,6 +6,15 @@ import { CodeBlock } from "@/components/docs/code-block"
 import { ComponentPreview } from "@/components/docs/component-preview"
 import { TableOfContents } from "@/components/docs/table-of-contents"
 
+/** Figma frame: Banner (node-id=14447-3283). API resolves background layer from frame children when bannerBackground=1. */
+const FIGMA_BANNER_FRAME_NODE_ID = "14447-3283"
+
+function figmaBannerImageUrl(nodeId: string, options?: { backgroundOnly?: boolean }): string {
+  const params = new URLSearchParams({ nodeId })
+  if (options?.backgroundOnly) params.set("bannerBackground", "1")
+  return `/api/figma-asset?${params.toString()}`
+}
+
 const installationCode = `import { Banner } from "@/components/ui/banner"`
 
 const basicUsageCode = `<Banner
@@ -79,6 +88,7 @@ export default function BannerPage() {
               variant="brand"
               title="KWT"
               icon={<MobileLogo logo="KWT" size={48} />}
+              backgroundImage={figmaBannerImageUrl(FIGMA_BANNER_FRAME_NODE_ID, { backgroundOnly: true })}
             />
           </ComponentPreview>
           <CodeBlock code={basicUsageCode} />
@@ -97,6 +107,7 @@ export default function BannerPage() {
               variant="brand"
               title="KWT"
               icon={<MobileLogo logo="KWT" size={48} />}
+              backgroundImage={figmaBannerImageUrl(FIGMA_BANNER_FRAME_NODE_ID, { backgroundOnly: true })}
             />
           </ComponentPreview>
 

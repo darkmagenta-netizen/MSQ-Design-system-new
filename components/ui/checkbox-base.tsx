@@ -3,9 +3,9 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { getIconByName } from "@/components/icons"
 
-// Figma icon assets
-const CHECK_ICON_URL = "https://www.figma.com/api/mcp/asset/aa44113c-d583-4584-bd4f-6e33bb2d1662"
+// Figma icon asset for indeterminate (minus) only; checked state uses design system "check" icon
 const MINUS_ICON_URL = "https://www.figma.com/api/mcp/asset/a8a33d77-3e54-4f8c-80b8-7da96bf707f8"
 
 const checkboxBaseVariants = cva(
@@ -361,19 +361,22 @@ export function CheckboxBase({
             </div>
           </div>
         ) : (
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden" style={{ width: iconSize, height: iconSize }}>
-            <div className="absolute bottom-1/4 left-[12.5%] right-[12.5%] top-[20.83%]">
-              <div className={cn("absolute", size === "sm" ? "inset-[-7.69%_-5.56%]" : "inset-[-5.77%_-4.17%]")}>
-                <img
-                  src={CHECK_ICON_URL}
-                  alt="Checked"
-                  className="block max-w-none size-full"
-                  style={{
-                    filter: isDisabled ? "brightness(0) saturate(100%) invert(72%) sepia(5%) saturate(500%) hue-rotate(202deg) brightness(95%) contrast(88%)" : "none"
-                  }}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+            {(() => {
+              const iconData = getIconByName("check")
+              const CheckIcon = iconData?.component
+              if (!CheckIcon) return null
+              return (
+                <CheckIcon
+                  size={iconSize}
+                  className={cn(
+                    "block flex-shrink-0",
+                    isDisabled ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-foreground-white)]"
+                  )}
+                  aria-hidden
                 />
-              </div>
-            </div>
+              )
+            })()}
           </div>
         )}
       </div>

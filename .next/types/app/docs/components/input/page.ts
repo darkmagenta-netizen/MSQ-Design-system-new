@@ -1,4 +1,4 @@
-// File: /Users/matildaanashie/Documents/MSQ Design system new/app/docs/components/input/page.tsx
+// File: /Users/matildaanashie/Documents/MSQ-Design-system-new/app/docs/components/input/page.tsx
 import * as entry from '../../../../../../app/docs/components/input/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -2,10 +2,27 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  // Keep critical theme classes in production (avoids purge issues on Vercel)
+  safelist: [
+    'bg-background',
+    'text-foreground',
+    'border-border',
+    'bg-card',
+    'text-card-foreground',
+    'text-muted-foreground',
+    'bg-muted',
+    'bg-accent',
+    'bg-primary',
+    'text-primary-foreground',
+    'dark:bg-background',
+    'dark:text-foreground',
+    'dark:border-border',
   ],
   theme: {
     container: {

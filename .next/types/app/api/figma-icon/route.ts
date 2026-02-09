@@ -1,4 +1,4 @@
-// File: /Users/matildaanashie/Documents/MSQ Design system new/app/api/figma-icon/route.ts
+// File: /Users/matildaanashie/Documents/MSQ-Design-system-new/app/api/figma-icon/route.ts
 import * as entry from '../../../../../app/api/figma-icon/route.js'
 import type { NextRequest } from 'next/server.js'
 

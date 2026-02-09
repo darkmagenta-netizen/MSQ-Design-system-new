@@ -263,6 +263,24 @@ export const iconComponents: Record<string, IconData> = {
     "Chevron right icon",
     "11099:44595"
   ),
+  "chevrons-left": createIcon(
+    "chevrons-left",
+    "Chevrons Left",
+    "arrows",
+    ["chevron", "left", "first", "double"],
+    "M11 17 6 12 11 7 M18 17 13 12 18 7",
+    "Double chevron left (first page)",
+    undefined
+  ),
+  "chevrons-right": createIcon(
+    "chevrons-right",
+    "Chevrons Right",
+    "arrows",
+    ["chevron", "right", "last", "double"],
+    "M13 7 18 12 13 17 M6 7 11 12 6 17",
+    "Double chevron right (last page)",
+    undefined
+  ),
 
   // Chart icons
   "bar-chart-01": createIcon(

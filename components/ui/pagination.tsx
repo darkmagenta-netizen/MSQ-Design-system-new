@@ -3,28 +3,15 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { iconComponents } from "@/components/icons/icons"
+import { getIconByName } from "@/components/icons"
 
-// Figma icon assets for pagination
-const CHEVRON_LEFT_URL = "https://www.figma.com/api/mcp/asset/8f1955f6-9be3-4725-8647-5e0c56ba54a8"
-const CHEVRON_RIGHT_URL = "https://www.figma.com/api/mcp/asset/4059d892-3003-4774-8134-fc8b59bda1ca"
-const CHEVRON_LEFT_DOUBLE_URL = "https://www.figma.com/api/mcp/asset/1e00a726-d6e8-49ef-bc86-41ae6dec3bee"
-const CHEVRON_RIGHT_DOUBLE_URL = "https://www.figma.com/api/mcp/asset/357267a1-fc28-44e0-a8f5-999a92424df5"
-const CHEVRON_DOWN_URL = "https://www.figma.com/api/mcp/asset/5d3d3709-98ba-448a-8994-2c87f31fad09"
-const CHEVRON_UP_URL = "https://www.figma.com/api/mcp/asset/5d3d3709-98ba-448a-8994-2c87f31fad09" // Same as down, rotated 180deg
+// Pagination and carousel use icons from the design system (same as icons library page)
+const ICON_SIZE = 20
 
-// Figma icon assets for carousel arrows (using same icons as pagination)
-const CAROUSEL_CHEVRON_LEFT_SM = CHEVRON_LEFT_URL
-const CAROUSEL_CHEVRON_RIGHT_SM = CHEVRON_RIGHT_URL
-const CAROUSEL_CHEVRON_LEFT_MD = CHEVRON_LEFT_URL
-const CAROUSEL_CHEVRON_RIGHT_MD = CHEVRON_RIGHT_URL
-const CAROUSEL_CHEVRON_LEFT_LG = CHEVRON_LEFT_URL
-const CAROUSEL_CHEVRON_RIGHT_LG = CHEVRON_RIGHT_URL
-
-// Figma image assets for carousel
-const CAROUSEL_IMAGE_SM = "https://www.figma.com/api/mcp/asset/060143df-13e6-4861-be2e-9fb7192746f7"
-const CAROUSEL_IMAGE_MD = "https://www.figma.com/api/mcp/asset/0d8c5078-5548-44e8-b116-208437408dd1"
-const CAROUSEL_IMAGE_LG = "https://www.figma.com/api/mcp/asset/13bb4146-55aa-457e-810d-5be70f9874d6"
+// Default carousel images (working URLs; pass imageSrc to override)
+const CAROUSEL_IMAGE_SM = "https://picsum.photos/seed/msqcarousel-sm/335/300"
+const CAROUSEL_IMAGE_MD = "https://picsum.photos/seed/msqcarousel-md/640/400"
+const CAROUSEL_IMAGE_LG = "https://picsum.photos/seed/msqcarousel-lg/640/400"
 
 const paginationButtonVariants = cva(
   "flex items-center justify-center min-h-[36px] px-2 py-1 border transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50",
@@ -59,9 +46,12 @@ const paginationNumberVariants = cva(
   {
     variants: {
       state: {
-        default: "bg-[var(--color-background)] border-[0.5px] border-[var(--color-border-tertiary)] text-[var(--color-text-secondary)]",
-        active: "bg-[#f8f5ff] border border-[var(--color-border-tertiary)] text-[var(--color-text-secondary)]",
-        focused: "bg-[var(--color-background)] border-[0.5px] border-[var(--color-border-tertiary)] text-[var(--color-text-secondary)] shadow-[0px_0px_0px_4px_rgba(41,96,236,0.14)]",
+        default:
+          "bg-[var(--color-background)] border-[0.5px] border-[var(--color-border-tertiary)] text-[var(--color-text-secondary)] dark:bg-[var(--color-background)] dark:border-[var(--color-border-tertiary)] dark:text-[var(--color-text-secondary)]",
+        active:
+          "bg-[#f8f5ff] border border-[var(--color-border-tertiary)] text-[var(--color-text-secondary)] dark:bg-[var(--color-primary)] dark:border-[var(--color-primary)] dark:text-[var(--color-text-on-primary)]",
+        focused:
+          "bg-[var(--color-background)] border-[0.5px] border-[var(--color-border-tertiary)] text-[var(--color-text-secondary)] shadow-[0px_0px_0px_4px_rgba(41,96,236,0.14)] dark:bg-[var(--color-background)] dark:border-[var(--color-border-tertiary)] dark:text-[var(--color-text-secondary)]",
       },
       shape: {
         square: "rounded-[var(--radius-sm)]",
@@ -233,7 +223,11 @@ export const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                 <option value={100}>100</option>
               </select>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <img src={CHEVRON_DOWN_URL} alt="" className="w-5 h-5" />
+                {(() => {
+                  const iconData = getIconByName("chevron-down")
+                  const Icon = iconData?.component
+                  return Icon ? <Icon size={ICON_SIZE} className="text-[var(--color-text-secondary)]" aria-hidden /> : null
+                })()}
               </div>
             </div>
           </div>
@@ -255,7 +249,11 @@ export const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                 "w-9"
               )}
             >
-              <img src={CHEVRON_LEFT_DOUBLE_URL} alt="First" className="w-5 h-5" />
+              {(() => {
+                const iconData = getIconByName("chevrons-left")
+                const Icon = iconData?.component
+                return Icon ? <Icon size={ICON_SIZE} className="text-[var(--color-text)] shrink-0" aria-hidden /> : null
+              })()}
             </button>
 
             {/* Previous Page Button */}
@@ -272,7 +270,11 @@ export const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                 "w-9"
               )}
             >
-              <img src={CHEVRON_LEFT_URL} alt="Previous" className="w-5 h-5" />
+              {(() => {
+                const iconData = getIconByName("chevron-left")
+                const Icon = iconData?.component
+                return Icon ? <Icon size={ICON_SIZE} className="text-[var(--color-text)] shrink-0" aria-hidden /> : null
+              })()}
             </button>
 
             {/* Page Numbers */}
@@ -326,7 +328,11 @@ export const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                 "w-9"
               )}
             >
-              <img src={CHEVRON_RIGHT_URL} alt="Next" className="w-5 h-5" />
+              {(() => {
+                const iconData = getIconByName("chevron-right")
+                const Icon = iconData?.component
+                return Icon ? <Icon size={ICON_SIZE} className="text-[var(--color-text)] shrink-0" aria-hidden /> : null
+              })()}
             </button>
 
             {/* Last Page Button */}
@@ -343,7 +349,11 @@ export const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                 "w-9"
               )}
             >
-              <img src={CHEVRON_RIGHT_DOUBLE_URL} alt="Last" className="w-5 h-5" />
+              {(() => {
+                const iconData = getIconByName("chevrons-right")
+                const Icon = iconData?.component
+                return Icon ? <Icon size={ICON_SIZE} className="text-[var(--color-text)] shrink-0" aria-hidden /> : null
+              })()}
             </button>
           </div>
         )}
@@ -492,23 +502,14 @@ export interface CarouselArrowProps extends React.ButtonHTMLAttributes<HTMLButto
 
 export const CarouselArrow = React.forwardRef<HTMLButtonElement, CarouselArrowProps>(
   ({ className, direction = "left", size = "md", onClick, ...props }, ref) => {
-    const chevronUrl =
-      direction === "left"
-        ? size === "sm"
-          ? CAROUSEL_CHEVRON_LEFT_SM
-          : size === "lg"
-            ? CAROUSEL_CHEVRON_LEFT_LG
-            : CAROUSEL_CHEVRON_LEFT_MD
-        : size === "sm"
-          ? CAROUSEL_CHEVRON_RIGHT_SM
-          : size === "lg"
-            ? CAROUSEL_CHEVRON_RIGHT_LG
-            : CAROUSEL_CHEVRON_RIGHT_MD
+    const iconData = getIconByName(direction === "left" ? "chevron-left" : "chevron-right")
+    const IconComponent = iconData?.component
 
     return (
       <button
         ref={ref}
         onClick={onClick}
+        aria-label={direction === "left" ? "Previous" : "Next"}
         className={cn(
           carouselArrowVariants({ size, position: direction }),
           direction === "left"
@@ -527,7 +528,7 @@ export const CarouselArrow = React.forwardRef<HTMLButtonElement, CarouselArrowPr
         )}
         {...props}
       >
-        <img src={chevronUrl} alt={direction === "left" ? "Previous" : "Next"} className="w-5 h-5" />
+        {IconComponent ? <IconComponent size={20} className="text-[var(--color-text)] shrink-0" aria-hidden /> : null}
       </button>
     )
   }
@@ -577,10 +578,11 @@ export const CarouselImage = React.forwardRef<HTMLDivElement, CarouselImageProps
     },
     ref
   ) => {
+    const [imageError, setImageError] = React.useState(false)
     const defaultImageSrc =
       size === "sm" ? CAROUSEL_IMAGE_SM : size === "lg" ? CAROUSEL_IMAGE_LG : CAROUSEL_IMAGE_MD
-
     const imageUrl = imageSrc || defaultImageSrc
+    const showPlaceholder = imageError
 
     const dimensions =
       size === "sm"
@@ -598,16 +600,33 @@ export const CarouselImage = React.forwardRef<HTMLDivElement, CarouselImageProps
         className={cn("relative rounded-[var(--radius-md)] overflow-hidden", dimensions, className)}
         {...props}
       >
+        {/* Fallback gradient only when image fails to load */}
+        {showPlaceholder && (
+          <div
+            className={cn(
+              "absolute inset-0 w-full h-full pointer-events-none rounded-[var(--radius-md)]",
+              "bg-gradient-to-br from-[var(--color-background-subtle)] via-[var(--color-background)] to-[var(--color-border-subtle)]",
+              "dark:from-[var(--color-background-overlay)] dark:via-[var(--color-background)] dark:to-[var(--color-border-tertiary)]"
+            )}
+            aria-hidden
+          />
+        )}
         <img
           src={imageUrl}
           alt="Carousel"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none rounded-[var(--radius-md)]"
+          onError={() => setImageError(true)}
+          className={cn(
+            "absolute inset-0 w-full h-full object-cover pointer-events-none rounded-[var(--radius-md)]",
+            showPlaceholder && "hidden"
+          )}
         />
 
-        {/* Dot Indicators */}
+        {/* Dot indicators: light overlay in light mode, solid dark in dark mode (not white) */}
         <div
           className={cn(
-            "absolute bottom-4 left-1/2 -translate-x-1/2 backdrop-blur-sm bg-[rgba(255,255,255,0.9)] flex items-center justify-center rounded-full",
+            "absolute bottom-4 left-1/2 -translate-x-1/2 backdrop-blur-sm flex items-center justify-center rounded-full",
+            "bg-white/90 border border-[var(--color-border-tertiary)]/50",
+            "dark:bg-[#1a1d23] dark:border-[var(--color-border-tertiary)]",
             dotGap,
             dotPadding
           )}

@@ -1,1 +1,24 @@
+# Dependencies
 node_modules/
+.pnp
+.pnp.js
+
+# Build output (Vercel builds from source; do not commit)
+.next/
+out/
+build/
+dist/
+
+# Debug / IDE
+.vscode/
+*.log
+npm-debug.log*
+.DS_Store
+
+# Env (keep .env.example)
+.env
+.env.local
+.env.*.local
+
+# Local deploy notes (do not push)
+DEPLOY.md

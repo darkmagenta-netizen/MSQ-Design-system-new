@@ -76,16 +76,15 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         />
       )}
       
-      {/* Sidebar: fixed below header on desktop, fixed overlay on mobile */}
+      {/* Sidebar: fixed below header on desktop, fixed overlay on mobile. When closed on mobile, pointer-events-none so header receives clicks. */}
       <aside
         className={cn(
           "w-[250px] xl:w-[300px] shrink-0 border-r bg-background transition-transform duration-300 ease-in-out",
           "h-[calc(100vh-3.5rem)]",
-          // Mobile: fixed overlay, slides in/out
-          "fixed top-14 left-0 z-50 lg:block",
-          // Desktop: fixed below header
+          // Mobile: fixed overlay, slides in/out; when closed don't capture clicks (header is underneath)
+          "fixed top-14 left-0 z-40 lg:block",
           "lg:fixed lg:top-14 lg:left-0 lg:z-40",
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          isOpen ? "translate-x-0 pointer-events-auto" : "-translate-x-full pointer-events-none lg:translate-x-0 lg:pointer-events-auto"
         )}
       >
         <div className="relative h-full w-full overflow-hidden">
@@ -95,8 +94,9 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
               <div className="mb-4 flex items-center justify-between lg:hidden">
                 <span className="text-sm font-semibold">Navigation</span>
                 <button
+                  type="button"
                   onClick={onClose}
-                  className="rounded-md p-1 hover:bg-accent"
+                  className="rounded-md p-2 hover:bg-accent"
                   aria-label="Close menu"
                 >
                   <X className="h-4 w-4" />
