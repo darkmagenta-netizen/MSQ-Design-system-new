@@ -146,7 +146,7 @@ function TooltipArrow({ side, align }: { side: Side; align: Align }) {
   )
 }
 
-export interface TooltipProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "content"> {
   /**
    * The tooltip title line (required).
    */

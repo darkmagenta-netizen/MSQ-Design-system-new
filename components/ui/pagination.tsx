@@ -397,7 +397,8 @@ export const PaginationDotIndicator = React.forwardRef<HTMLDivElement, Paginatio
 PaginationDotIndicator.displayName = "PaginationDotIndicator"
 
 // Pagination Dot Group Component
-export interface PaginationDotGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PaginationDotGroupProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "style"> {
   /**
    * Total number of dots
    */
@@ -411,7 +412,7 @@ export interface PaginationDotGroupProps extends React.HTMLAttributes<HTMLDivEle
    */
   size?: "md" | "lg"
   /**
-   * Style of indicator
+   * Style of indicator: dot or line
    */
   style?: "dot" | "line"
   /**

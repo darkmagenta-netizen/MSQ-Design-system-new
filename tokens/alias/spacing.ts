@@ -8,21 +8,23 @@
 import { AliasSpacing } from '../types';
 import { mapped } from '../mapped';
 
+const s = (v: string | number): string => (typeof v === 'string' ? v : String(v));
+
 export const aliasSpacing: AliasSpacing = {
   // Card and container spacing
-  'spacing-card-padding': mapped.spacing['spacing-4'],
-  'spacing-section-gap': mapped.spacing['spacing-8'],
-  'spacing-container-padding': mapped.spacing['spacing-6'],
+  'spacing-card-padding': s(mapped.spacing['spacing-4']),
+  'spacing-section-gap': s(mapped.spacing['spacing-8']),
+  'spacing-container-padding': s(mapped.spacing['spacing-6']),
 
   // Button spacing
-  'spacing-button-padding-x': mapped.spacing['spacing-4'],
-  'spacing-button-padding-y': mapped.spacing['spacing-2'],
+  'spacing-button-padding-x': s(mapped.spacing['spacing-4']),
+  'spacing-button-padding-y': s(mapped.spacing['spacing-2']),
 
   // Input spacing
-  'spacing-input-padding-x': mapped.spacing['spacing-4'],
-  'spacing-input-padding-y': mapped.spacing['spacing-2'],
+  'spacing-input-padding-x': s(mapped.spacing['spacing-4']),
+  'spacing-input-padding-y': s(mapped.spacing['spacing-2']),
 
   // Grid spacing
-  'spacing-grid-gap': mapped.spacing['spacing-4'],
+  'spacing-grid-gap': s(mapped.spacing['spacing-4']),
 };
 

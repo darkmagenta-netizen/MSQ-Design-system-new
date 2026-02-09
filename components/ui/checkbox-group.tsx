@@ -107,14 +107,12 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
         "border-[#8faefc] bg-[var(--color-background)] shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]":
           !isSelected && visualState === "Focused",
         "bg-[var(--color-background-subtle)] border-[var(--color-border-tertiary)] cursor-not-allowed":
-          isDisabled && !isSelected,
+          isDisabled,
         // Selected states
         "bg-[var(--color-background)] border-[#4375f4]":
           isSelected && (visualState === "Default" || visualState === "Hover"),
         "bg-[var(--color-background)] border-[#4375f4] shadow-[0px_0px_0px_4px_rgba(100,142,249,0.24)]":
           isSelected && visualState === "Focused",
-        "bg-[var(--color-background-subtle)] border-[var(--color-border-tertiary)] cursor-not-allowed":
-          isDisabled && isSelected,
       },
       className
     )
@@ -130,11 +128,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
     )
 
     const supportingTextStyles = cn(
-      "font-normal leading-[18px] tracking-[0.192px] text-xs",
-      {
-        "text-[var(--color-text-tertiary)]": !isDisabled,
-        "text-[var(--color-text-tertiary)]": isDisabled,
-      }
+      "font-normal leading-[18px] tracking-[0.192px] text-xs text-[var(--color-text-tertiary)]"
     )
 
     return (

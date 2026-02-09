@@ -66,14 +66,14 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       onBlur?.(e)
     }
 
-    const handleMouseEnter = (e: React.MouseEvent<HTMLInputElement>) => {
+    const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
       setIsHovered(true)
-      onMouseEnter?.(e)
+      onMouseEnter?.(e as React.MouseEvent<HTMLInputElement>)
     }
 
-    const handleMouseLeave = (e: React.MouseEvent<HTMLInputElement>) => {
+    const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
       setIsHovered(false)
-      onMouseLeave?.(e)
+      onMouseLeave?.(e as React.MouseEvent<HTMLInputElement>)
     }
 
     const state: CheckboxBaseState = disabled

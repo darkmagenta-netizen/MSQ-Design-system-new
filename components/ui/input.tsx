@@ -38,8 +38,12 @@ const inputVariants = cva(
 )
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type">,
     VariantProps<typeof inputVariants> {
+  /**
+   * Native HTML input type (e.g. "text", "number"); only used when variant type is default/leading-text/trailing-button.
+   */
+  inputType?: React.InputHTMLAttributes<HTMLInputElement>["type"]
   /**
    * Leading text to display before the input (e.g., "http://")
    */
@@ -81,6 +85,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       size,
       status,
       type,
+      inputType,
       leadingText,
       trailingButton,
       dropdownValue,
@@ -146,6 +151,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ) : (
       <input
         ref={ref}
+        type={inputType ?? "text"}
         className={inputClassName}
         disabled={disabled}
         onFocus={handleFocus}

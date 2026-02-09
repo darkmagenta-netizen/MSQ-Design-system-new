@@ -103,7 +103,9 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
   ) => {
     const [isOpen, setIsOpen] = React.useState(state === "expanded")
     const [internalSearchValue, setInternalSearchValue] = React.useState(searchValue)
-    
+
+    const optionList: DropdownOption[] = Array.isArray(options) ? options : []
+
     // Fallback components for missing icons
     const ChevronDownFallback = React.forwardRef<SVGSVGElement, IconProps>((props, ref) => (
       <Icon ref={ref} {...props}>
@@ -174,16 +176,17 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 
     const selectedOption = React.useMemo(() => {
       if (multiple && Array.isArray(value)) {
-        return options.filter((opt) => value.includes(opt.value))
+        return optionList.filter((opt) => value.includes(opt.value))
       }
-      return options.find((opt) => opt.value === value)
-    }, [value, options, multiple])
+      return optionList.find((opt) => opt.value === value)
+    }, [value, optionList, multiple])
 
     const displayValue = React.useMemo(() => {
       if (multiple && Array.isArray(value) && value.length > 0) {
         return `${value.length} selected`
       }
-      return selectedOption?.label || placeholder || "Select..."
+      const single = Array.isArray(selectedOption) ? undefined : selectedOption
+      return single?.label || placeholder || "Select..."
     }, [selectedOption, placeholder, value, multiple])
 
     const isSelected = (optionValue: string) => {
@@ -195,12 +198,12 @@ const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
 
     const filteredOptions = React.useMemo(() => {
       if (type === "location" && internalSearchValue) {
-        return options.filter((opt) =>
+        return optionList.filter((opt) =>
           opt.label.toLowerCase().includes(internalSearchValue.toLowerCase())
         )
       }
-      return options
-    }, [options, internalSearchValue, type])
+      return optionList
+    }, [optionList, internalSearchValue, type])
 
     return (
       <div

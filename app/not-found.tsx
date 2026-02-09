@@ -2,33 +2,16 @@ import Link from "next/link"
 
 export default function NotFound() {
   return (
-    <div style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 24,
-          fontFamily: "system-ui, sans-serif",
-          textAlign: "center",
-        }}>
-      <h1 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: 8 }}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 text-center bg-background text-foreground">
+      <h1 className="text-2xl font-semibold mb-2">
         Page not found
       </h1>
-      <p style={{ color: "#666", marginBottom: 24 }}>
+      <p className="text-muted-foreground mb-6">
         The page you’re looking for doesn’t exist or couldn’t be loaded.
       </p>
       <Link
         href="/"
-        style={{
-          display: "inline-block",
-          padding: "10px 20px",
-          backgroundColor: "#2960ec",
-          color: "#fff",
-          borderRadius: 6,
-          textDecoration: "none",
-          fontWeight: 500,
-        }}
+        className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-primary text-primary-foreground font-medium no-underline hover:opacity-90 transition-opacity"
       >
         Go to home
       </Link>
