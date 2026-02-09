@@ -18,8 +18,8 @@ Step-by-step guide for developers to use the MSQ Design System in an existing co
 
 ```bash
 # Clone the design system repo (replace with your org/repo)
-git clone https://github.com/YOUR_ORG/msq-design-system.git
-cd msq-design-system
+git clone https://github.com/YOUR_ORG/msq-design-system-new.git
+cd msq-design-system-new
 npm install
 npm run dev
 # Docs at http://localhost:3001/docs
@@ -32,9 +32,9 @@ Use this copy as a reference: browse components and copy only what you need into
 From your **existing app** root:
 
 ```bash
-git submodule add https://github.com/YOUR_ORG/msq-design-system.git packages/design-system
+git submodule add https://github.com/YOUR_ORG/msq-design-system-new.git packages/design-system
 # Or: design-system at repo root
-git submodule add https://github.com/YOUR_ORG/msq-design-system.git design-system
+git submodule add https://github.com/YOUR_ORG/msq-design-system-new.git design-system
 ```
 
 Then copy files from `design-system/` (or `packages/design-system/`) into your app as in Part 2. Update the submodule when the design system changes:
@@ -236,97 +236,3 @@ Use the **Docs** site (run locally from the design system repo) to see props, va
 For more detail on components and tokens, see **DOCUMENTATION.md** and **COMPONENTS.md** in the design system repo.
 
 ---
-
-## Part 5: Design-to-code bridge – how this fits (and what to add)
-
-The design system is positioned as a **design-to-code bridge**, not a design tool. Here’s how it lines up with the four goals and what to add so it fully delivers the “with MCP + Cursor” story.
-
-### The four goals
-
-| Goal | How the current product delivers it | Gap (if any) |
-|------|-------------------------------------|--------------|
-| **Source of truth** | This repo is the **code source of truth**: tokens (`tokens/`, `app/globals.css`), components (`components/ui/`), and icons (`lib/figma-icons-*.json`) live here. Consuming apps copy from here, so there is one place to look for “what’s the correct token/variant?” | Figma remains the **design** source of truth; sync is script-based (icons) or manual (tokens/components). Design and code are two sources unless you add a defined “Figma → this repo” process or automation. |
-| **Reduced interpretation** | **Tokens are named and documented** (`--color-primary`, `--color-alert-error-text`, etc.). **Components expose clear variants** (e.g. `Button` primary/secondary/outline). Devs use tokens and components instead of guessing spacing or hex values. | Interpretation is reduced **at consumption time**. The initial “Figma → tokens/variants” mapping was done when building the design system; it’s not yet automated (e.g. via MCP or token export from Figma). |
-| **Lower rework** | **Single component set and token set** across apps: copy once, use everywhere. No rebuilding the same button or alert in each app. **Docs + Integration guide** reduce “how do I use this?” rework. | Rework is lower **when teams actually use** this repo. Predictable **update flow** (e.g. “Figma changes → update design system → then apps”) needs to be written down or automated. |
-| **Predictable updates** | **Icons**: `figma-icons-sync` and `figma-icons-merge` give a repeatable path from Figma to `lib/figma-icons-*.json`. **Components/tokens**: updates are “change the design system, then copy or pull from it.” | Icon updates are script-driven; component and token updates are manual. “Predictable” is true if you define a process (e.g. “design system release → changelog → update consuming apps”); it’s not yet “Figma change auto-reflects in code” without extra tooling. |
-
-**Summary:** The product **does fit** the list when the design system repo is treated as the **code source of truth** and teams use it consistently. It delivers “reduced interpretation” and “lower rework” for devs who use the tokens and components. “Source of truth” and “predictable updates” are strongest for **code**; to align **design** (Figma) and **code** (this repo) more tightly, you add the items below.
-
----
-
-### Why devs care (practical terms)
-
-**Without a design-to-code bridge (e.g. no design system, no MCP):**
-
-- Devs manually inspect Figma.
-- They guess spacing, tokens, and variants.
-- They rebuild components per app and drift from design.
-- Design debt grows (inconsistent buttons, colors, spacing).
-
-**With this design system (current setup):**
-
-- **Design intent is partly codified:** tokens and component variants reflect the intended design; devs use `Button variant="primary"` and `--color-primary` instead of guessing.
-- **Components and tokens are the reference:** docs and code show “what design meant” for buttons, alerts, logos, etc.
-- **Fewer “what did design mean?” conversations:** the answer is “use this component/variant or this token.”
-- **Faster iteration:** change the design system once, then update consuming apps (copy or submodule); no rebuilding from Figma in every app.
-
-**With MCP + Cursor (optional next step):**
-
-- Figma can become a **direct** source for Cursor (e.g. via Figma MCP): file structure, tokens, components.
-- Cursor can suggest or align code with Figma using the same tokens and variants this repo defines.
-- The design system then acts as the **bridge**: Figma (design) ↔ this repo (codified tokens/components) ↔ Cursor (code generation aligned to both).
-
-So: the **current product already gives** “codified intent,” “real tokens and variants,” and “fewer guesswork conversations.” Adding **MCP + Cursor** (and optionally Figma MCP) strengthens “design intent codified” by linking Figma and this repo in the editor.
-
----
-
-### What to include so the product fully fits the list
-
-1. **Document the source-of-truth model**
-   - Add a short **README or DESIGN-SYSTEM.md** that states: “Figma is the design source of truth; this repo is the **code** source of truth. Design changes should flow: Figma → design system (tokens/components) → consuming apps.”
-   - Optionally: a one-page “release/update process” (e.g. when Figma tokens change, update `app/globals.css` and `tokens/`, then cut a release or update the integration guide).
-
-2. **Token and variant audit trail (optional)**
-   - In `tokens/` or in docs, add a short note or table linking **Figma token names** (or style names) to **CSS variables / Tailwind** (e.g. “Primary Blue → `--color-primary`”). That makes “reduced interpretation” and “predictable updates” explicit when design changes.
-
-3. **Figma → design system sync (where it doesn’t exist)**
-   - **Icons:** You already have `figma-icons-sync` and `figma-icons-merge`; document them in the integration or ICONS-EXTRACTION-GUIDE so “predictable icon updates” is clear.
-   - **Tokens:** If Figma has design tokens (e.g. Styles or variables), add a script or doc that maps “Figma token X → `app/globals.css` / `tokens/`” so token updates are repeatable.
-
-4. **MCP + Cursor (optional)**
-   - If you use **Figma MCP** in Cursor, add a short section to the integration guide: “Using the design system with Figma MCP in Cursor.” Explain that Cursor can read Figma for context and that this repo defines the **code** implementation (tokens, components); that way, Cursor can suggest code that matches both Figma and this design system.
-   - No code change is required in this repo for “devs use Cursor + Figma MCP”; the design system remains the place to copy components and tokens from.
-
-5. **Integration guide and checklist**
-   - You already have “Part 4: Checklist summary” and “Part 5” (this section). Keep them so that “how to use this in our codebase” and “how this delivers the four goals” are in one place for both product and devs.
-
----
-
-### One-line summary
-
-**Does the product fit the list?** Yes: it delivers **source of truth** (this repo for code), **reduced interpretation** (tokens + component variants), **lower rework** (single component/token set), and **predictable updates** (scripted for icons; process-based for tokens/components). To fully align with the “with MCP + Cursor” story and make design↔code updates even more predictable, add: (1) a short doc that states the Figma ↔ design system relationship, (2) optional token/variant mapping from Figma, (3) optional Figma MCP + Cursor section in the integration guide.
-
----
-
-## Part 6: Using the design system with Figma MCP in Cursor (optional)
-
-If you use **Figma MCP** in Cursor, you can combine Figma (design context) with this design system (code implementation) for better alignment between design and code.
-
-### How it fits together
-
-- **Figma** is the design source of truth: layouts, components, and styles live in Figma.
-- **This repo** is the code source of truth: tokens (`app/globals.css`, `tokens/`), components (`components/ui/`), and icon data (`lib/figma-icons-*.json`) are implemented here.
-- **Cursor + Figma MCP** can read Figma files for context (e.g. component structure, names, variants). When you ask Cursor to implement or change UI, it can use both:
-  - Figma (what the design looks like and how it’s structured), and
-  - This design system (which tokens and components to use and how they’re named).
-
-### What to do
-
-1. **Enable Figma MCP** in Cursor (if not already) and connect it to your Figma file or team.
-2. **Use this repo as the reference for code.** When Cursor suggests components or tokens, point it to the design system: e.g. “Use the Button and Alert components and tokens from our design system” or “Follow the token names in `app/globals.css` and `tokens/FIGMA-TOKEN-MAP.md`.”
-3. **Copy from the design system into your app** as in Part 2. The design system does not change for MCP; it remains the place you copy components and tokens from. Cursor can then suggest code that matches both Figma and this implementation.
-
-### Result
-
-- Cursor can suggest or generate code that aligns with **Figma** (design) and with **this repo** (tokens and components), reducing guesswork and rework.
-- No code changes are required in this design system repo for “devs use Cursor + Figma MCP”; the repo stays the single code source of truth that teams copy from.
